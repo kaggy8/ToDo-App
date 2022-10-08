@@ -24,8 +24,18 @@ class TaskListViewController: UITableViewController {
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                            target: self,
+                                                            action: #selector(addNewTask))
+        navigationController?.navigationBar.tintColor = .white
+        
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
     }
+    
+    @objc private func addNewTask() {
+        
+    }
 }
 
+// Time --1:07:34
