@@ -7,18 +7,30 @@
 
 import UIKit
 
+protocol TaskViewControllerDelegate {
+    func reloadData()
+}
+
 class TaskListViewController: UITableViewController {
+    
+    private let cellID = "task"
+    private var taskList: [Task] = []
+    private let storageManager = StorageManager.shared
+        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         setupNavigationBar()
+        fetchData()
     }
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "ToDo List"
         
-        let navBarAppearance =  UINavigationBarAppearance()
+        let navBarAppearance = UINavigationBarAppearance()
         
         navBarAppearance.backgroundColor = UIColor.orange
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -36,6 +48,36 @@ class TaskListViewController: UITableViewController {
     
     @objc private func addNewTask() {
         let taskVC = TaskViewController()
+        taskVC.delegate = self
         present(taskVC, animated: true)
+    }
+    
+    private func fetchData() {
+        taskList = storageManager.fetchData(taskList)
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension TaskListViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        taskList.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
+        let task = taskList[indexPath.row]
+        var content = cell.defaultContentConfiguration()
+        content.text = task.title
+        cell.contentConfiguration = content
+        
+        return cell
+    }
+}
+
+//MARK -TaskViewControllerDelegate
+extension TaskListViewController: TaskViewControllerDelegate {
+    func reloadData() {
+        fetchData()
+        tableView.reloadData()
     }
 }
