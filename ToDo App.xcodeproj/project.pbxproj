@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		540A9AC528F35576002C7B5C /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540A9AC428F35576002C7B5C /* TaskViewController.swift */; };
 		540A9ACA28F37970002C7B5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 540A9AC928F37970002C7B5C /* LaunchScreen.storyboard */; };
 		540A9ACF28F37DBE002C7B5C /* Storage Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540A9ACE28F37DBE002C7B5C /* Storage Manager.swift */; };
 		543A238028F220A5005B148F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543A237F28F220A5005B148F /* AppDelegate.swift */; };
@@ -17,7 +16,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		540A9AC428F35576002C7B5C /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		540A9AC928F37970002C7B5C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		540A9ACE28F37DBE002C7B5C /* Storage Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage Manager.swift"; sourceTree = "<group>"; };
 		543A237C28F220A5005B148F /* ToDo App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ToDo App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,7 +41,6 @@
 			isa = PBXGroup;
 			children = (
 				543A238328F220A5005B148F /* TaskListViewController.swift */,
-				540A9AC428F35576002C7B5C /* TaskViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -173,7 +170,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				543A238428F220A5005B148F /* TaskListViewController.swift in Sources */,
-				540A9AC528F35576002C7B5C /* TaskViewController.swift in Sources */,
 				540A9ACF28F37DBE002C7B5C /* Storage Manager.swift in Sources */,
 				543A238028F220A5005B148F /* AppDelegate.swift in Sources */,
 				543A238A28F220A5005B148F /* ToDo_App.xcdatamodeld in Sources */,

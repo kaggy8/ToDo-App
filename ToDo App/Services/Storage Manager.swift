@@ -26,7 +26,6 @@ class StorageManager {
     
     // MARK: - Core Data Saving support
     func saveContext () {
-        //let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
@@ -37,13 +36,11 @@ class StorageManager {
         }
     }
     
-    func saveData(_ data: String?) {
-        //let context = persistentContainer.viewContext
-        guard let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return }
-        guard let task = NSManagedObject(entity: entityDescription, insertInto: context) as? Task else { return }
-        guard let data = data else { return }
-        task.title = data
-        
+    func saveData(_ data: String?) -> Task? {
+        let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: context)
+        let task = NSManagedObject(entity: entityDescription!, insertInto: context) as? Task
+        task!.title = data
+
         if context.hasChanges {
             do {
                 try context.save()
@@ -51,11 +48,12 @@ class StorageManager {
                 print(error)
             }
         }
+
+        return task
     }
     
     func fetchData(_ data: [Task]) -> [Task] {
         var dataArray = data
-        let context = persistentContainer.viewContext
         let fetchRequest = Task.fetchRequest()
         
         do {
@@ -66,5 +64,18 @@ class StorageManager {
             return [Task]()
         }
     }
+    
+    func deleteData(_ data: [Task], index: Int) {
+        print(index)
+        context.delete(data[index])
+        
+        do {
+            try context.save()
+        } catch let error {
+            print(error)
+        }
+    }
+    
+    private init() {}
 }
 
