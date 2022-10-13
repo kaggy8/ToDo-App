@@ -37,10 +37,10 @@ class StorageManager {
     }
     
     func saveData(_ data: String?) -> Task? {
-        let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: context)
-        let task = NSManagedObject(entity: entityDescription!, insertInto: context) as? Task
-        task!.title = data
-
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: context) else { return nil }
+        guard let task = NSManagedObject(entity: entityDescription, insertInto: context) as? Task else { return nil }
+        task.title = data
+        
         if context.hasChanges {
             do {
                 try context.save()
@@ -48,7 +48,7 @@ class StorageManager {
                 print(error)
             }
         }
-
+        
         return task
     }
     
@@ -66,11 +66,29 @@ class StorageManager {
     }
     
     func deleteData(_ data: [Task], index: Int) {
-        print(index)
         context.delete(data[index])
         
         do {
             try context.save()
+        } catch let error {
+            print(error)
+        }
+    }
+    
+    func updateData(index: Int, changedValue: String) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
+        
+        do {
+            guard let result = try context.fetch(fetchRequest) as? [Task] else { return }
+            
+            let task = result[index]
+            task.setValue(changedValue, forKey: "title")
+            
+            do {
+                try context.save()
+            } catch let error {
+                print(error)
+            }
         } catch let error {
             print(error)
         }

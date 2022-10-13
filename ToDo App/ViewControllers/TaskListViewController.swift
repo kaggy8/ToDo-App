@@ -62,15 +62,41 @@ class TaskListViewController: UITableViewController {
         alert.addTextField { textField in
             textField.placeholder = "Новая задача"
         }
+        
+        present(alert, animated: true)
+    }
+    
+    private func updateTask(with title: String, and message: String, index: Int) {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        let saveAction = UIAlertAction(title: "Сохранить", style: .default) { _ in
+            guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
+            self.update(index, changedValue: task)
+        }
+        let cancelAction = UIAlertAction(title: "Отменить", style: .destructive)
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { textField in
+            textField.text = self.taskList[index].title
+        }
+        
         present(alert, animated: true)
     }
     
     private func save(_ taskName: String) {
         guard let task = storageManager.saveData(taskName) else { return }
         taskList.append(task)
-        
+        print(taskList)
         let cellIndex = IndexPath(row: taskList.count - 1, section: 0)
         tableView.insertRows(at: [cellIndex], with: .automatic)
+    }
+    
+    private func update(_ taskIndex: Int, changedValue: String) {
+        storageManager.updateData(index: taskIndex, changedValue: changedValue)
+
+        let cellIndex = IndexPath(row: taskIndex , section: 0)
+        tableView.reloadRows(at: [cellIndex], with: .automatic)
     }
 }
 
@@ -101,5 +127,9 @@ extension TaskListViewController {
             taskList.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        updateTask(with: "Обновить задачу", and: "Что вы хотите сделать?", index: indexPath.row)
     }
 }
