@@ -43,60 +43,27 @@ class TaskListViewController: UITableViewController {
     }
     
     @objc private func addNewTask() {
-        showAlert(with: "Новая задача", and: "Что вы хотите сделать")
-    }
-    
-    private func fetchData() {
-        taskList = storageManager.fetchData(taskList)
-    }
-    
-    private func showAlert(with title: String, and message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let saveAction = UIAlertAction(title: "Сохранить", style: .default) { _ in
-            guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
-            self.save(task)
-        }
-        let cancelAction = UIAlertAction(title: "Отменить", style: .destructive)
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        alert.addTextField { textField in
-            textField.placeholder = "Новая задача"
-        }
-        
-        present(alert, animated: true)
-    }
-    
-    private func updateTask(with title: String, and message: String, index: Int) {
-        let alert = UIAlertController(title: title,
-                                      message: message,
-                                      preferredStyle: .alert)
-        let saveAction = UIAlertAction(title: "Сохранить", style: .default) { _ in
-            guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
-            self.update(index, changedValue: task)
-        }
-        let cancelAction = UIAlertAction(title: "Отменить", style: .destructive)
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        alert.addTextField { textField in
-            textField.text = self.taskList[index].title
-        }
-        
-        present(alert, animated: true)
+        showAlert()
     }
     
     private func save(_ taskName: String) {
-        guard let task = storageManager.saveData(taskName) else { return }
-        taskList.append(task)
-        print(taskList)
-        let cellIndex = IndexPath(row: taskList.count - 1, section: 0)
-        tableView.insertRows(at: [cellIndex], with: .automatic)
+        storageManager.saveData(taskName) { task in
+            self.taskList.append(task)
+            self.tableView.insertRows(
+                at: [IndexPath(row: self.taskList.count - 1, section: 0)],
+                with: .automatic)
+            }
     }
     
-    private func update(_ taskIndex: Int, changedValue: String) {
-        storageManager.updateData(index: taskIndex, changedValue: changedValue)
-
-        let cellIndex = IndexPath(row: taskIndex , section: 0)
-        tableView.reloadRows(at: [cellIndex], with: .automatic)
+    private func fetchData() {
+        storageManager.fetchData { result in
+            switch result {
+            case.success(let tasks):
+                self.taskList = tasks
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
@@ -117,19 +84,40 @@ extension TaskListViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let task = taskList[indexPath.row]
+        
         if editingStyle == .delete {
-            storageManager.deleteData(taskList, index: indexPath.row)
+            storageManager.deleteData(task)
             taskList.remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        updateTask(with: "Обновить задачу", and: "Что вы хотите сделать?", index: indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: true)
+        let task = taskList[indexPath.row]
+        showAlert(task: task) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+    }
+}
+
+// MAR: -Alert Controller
+extension TaskListViewController {
+    private func showAlert(task: Task? = nil, completion: (() -> Void)? = nil) {
+        let title = task != nil ? "Обновить задачу" : "Новая задача"
+        let alert = UIAlertController.createAlertController(withTitle: title)
+        
+        alert.action(task: task) { taskName in
+            if let task = task, let completion = completion {
+                self.storageManager.editData(data: task, changedValue: taskName)
+                completion()
+            } else {
+                self.save(taskName)
+            }
+        }
+        
+        present(alert, animated: true)
     }
 }

@@ -13,6 +13,7 @@
 		543A238428F220A5005B148F /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543A238328F220A5005B148F /* TaskListViewController.swift */; };
 		543A238A28F220A5005B148F /* ToDo_App.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 543A238828F220A5005B148F /* ToDo_App.xcdatamodeld */; };
 		543A238C28F220A6005B148F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 543A238B28F220A6005B148F /* Assets.xcassets */; };
+		5473A51528FA0A2000AB1392 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5473A51428FA0A2000AB1392 /* UIAlertController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		543A238928F220A5005B148F /* ToDo_App.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo_App.xcdatamodel; sourceTree = "<group>"; };
 		543A238B28F220A6005B148F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		543A239028F220A6005B148F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5473A51428FA0A2000AB1392 /* UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +50,7 @@
 		540A9AC728F37871002C7B5C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5473A51328FA0A0700AB1392 /* Extension */,
 				543A237F28F220A5005B148F /* AppDelegate.swift */,
 				540A9AC928F37970002C7B5C /* LaunchScreen.storyboard */,
 				543A239028F220A6005B148F /* Info.plist */,
@@ -97,6 +100,14 @@
 				540A9AC828F378A1002C7B5C /* Source */,
 			);
 			path = "ToDo App";
+			sourceTree = "<group>";
+		};
+		5473A51328FA0A0700AB1392 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				5473A51428FA0A2000AB1392 /* UIAlertController.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,6 +184,7 @@
 				540A9ACF28F37DBE002C7B5C /* Storage Manager.swift in Sources */,
 				543A238028F220A5005B148F /* AppDelegate.swift in Sources */,
 				543A238A28F220A5005B148F /* ToDo_App.xcdatamodeld in Sources */,
+				5473A51528FA0A2000AB1392 /* UIAlertController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
